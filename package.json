@@ -1,0 +1,21 @@
+{
+  "name": "brokerage-viz-api",
+  "version": "1.0.0",
+  "description": "API server for brokerage viz project",
+  "main": "index.js",
+  "repository": "git@github.com:alankyshum/brokerage-viz-api.git",
+  "author": "Alan Shum <alan200994@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node",
+    "build": "babel src -d dist",
+    "serve": "node dist/index.js"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.1"
+  },
+  "dependencies": {
+    "koa": "^2.5.2"
+  }
+}
