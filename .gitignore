@@ -1,2 +1,4 @@
 dist
 node_modules
+.cached-fetch
+.env

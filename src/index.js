@@ -1,9 +1,21 @@
-import koa from 'koa';
+import Koa from 'koa';
+import Router from 'koa-router';
+import dotEnv from 'dotenv';
 
-const app = new koa();
+import { Portfolio } from '../../robinhood-portfolio';
 
-app.use(async ctx => {
-  ctx.body = 'Hello World';
+dotEnv.config();
+
+const app = new Koa();
+const router = Router();
+const port = 3000;
+
+router.get('/portfolio', async (ctx) => {
+  const portfolio = new Portfolio(process.env.ROBINHOOD_TOKEN, { testMode: true });
+  const orderhistory = await portfolio.getOrderHistory();
+  ctx.body = JSON.stringify(orderhistory);
 });
 
-app.listen(3000);
+app.use(router.routes());
+app.listen(port);
+console.log(`Server listening to port ${port}`);
