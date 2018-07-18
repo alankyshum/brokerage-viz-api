@@ -7,7 +7,7 @@
   "author": "Alan Shum <alan200994@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/index.js --exec babel-node",
+    "dev": "nodemon src/index.js --exec babel-node",
     "build": "babel src -d dist",
     "serve": "node dist/index.js"
   },
@@ -21,6 +21,7 @@
     "nodemon": "^1.18.1"
   },
   "dependencies": {
+    "@koa/cors": "^2.2.2",
     "dotenv": "^6.0.0",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0"

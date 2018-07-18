@@ -1,7 +1,9 @@
 import Koa from 'koa';
 import Router from 'koa-router';
+import cors from '@koa/cors';
 import dotEnv from 'dotenv';
 
+import corsConfig from '../cors.json';
 import { Portfolio } from '../../robinhood-portfolio';
 
 dotEnv.config();
@@ -16,6 +18,7 @@ router.get('/portfolio', async (ctx) => {
   ctx.body = JSON.stringify(orderhistory);
 });
 
+app.use(cors(corsConfig));
 app.use(router.routes());
 app.listen(port);
 console.log(`Server listening to port ${port}`);
