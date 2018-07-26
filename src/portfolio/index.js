@@ -15,21 +15,42 @@ export default class PortfolioAPI {
   static parse(rawJSON) {
     return {
       orders: rawJSON.orders.map((orderRecord) => {
+        const {
+          side, quantity, name, symbol, country,
+          average_price: averagePrice,
+          last_transaction_at: lastTransactionAt,
+        } = orderRecord;
+
         return {
-          ...orderRecord,
-          quantity: orderRecord.quantity ? parseInt(orderRecord.quantity, 10) : 0,
-          price: orderRecord.average_price ? parseFloat(orderRecord.average_price, parseFloat) : 0,
-          last_transaction_at: PortfolioAPI.getDate(orderRecord.last_transaction_at),
+          side,
+          name,
+          symbol,
+          country,
+          quantity: parseInt(quantity || null, 10),
+          price: parseFloat(averagePrice || null, 10),
+          lastTransactionAt: PortfolioAPI.getDate(lastTransactionAt),
         };
       }),
       options: rawJSON.options.map((orderRecord) => {
+        const {
+          quantity, price, type, state,
+          chain_symbol: chainSymbol,
+          closing_strategy: closingStrategy,
+          updated_at: lastTransactionAt,
+          strike_price: strikePrice,
+          expiration_date: expirationDate,
+        } = orderRecord;
+
         return {
-          ...orderRecord,
-          quantity: orderRecord.quantity ? parseInt(orderRecord.quantity, 10) : 0,
-          price: orderRecord.price ? parseFloat(orderRecord.price, parseFloat) : 0,
-          last_transaction_at: PortfolioAPI.getDate(orderRecord.updated_at),
-          strike_price: orderRecord.strike_price ? parseFloat(orderRecord.strike_price, parseFloat) : 0,
-          expiration_date: PortfolioAPI.getDate(orderRecord.expiration_date),
+          state,
+          closingStrategy,
+          side: type === 'call' ? 'buy' : 'sell',
+          symbol: chainSymbol,
+          quantity: parseInt(quantity || null, 10),
+          price: parseFloat(price || null, 10),
+          strikePrice: parseFloat(strikePrice || null, 10),
+          lastTransactionAt: PortfolioAPI.getDate(lastTransactionAt),
+          expirationDate: PortfolioAPI.getDate(expirationDate),
         };
       }),
     };
@@ -37,6 +58,11 @@ export default class PortfolioAPI {
 
   static getDate(ISOdateString) {
     const datesParts = ISOdateString.match(/(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/).groups;
-    return new Date(datesParts.year, datesParts.month, datesParts.day);
+
+    return new Date(
+      parseInt(datesParts.year, 10),
+      parseInt(datesParts.month, 10) - 1,
+      parseInt(datesParts.day, 10),
+    );
   }
 }
