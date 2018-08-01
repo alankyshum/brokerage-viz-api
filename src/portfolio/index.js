@@ -26,7 +26,7 @@ export default class PortfolioAPI {
           name,
           symbol,
           country,
-          quantity: parseInt(quantity || null, 10),
+          quantity: PortfolioAPI.offsetQuantity(side, parseInt(quantity, 10) || null),
           price: parseFloat(averagePrice || null, 10),
           lastTransactionAt: PortfolioAPI.getDate(lastTransactionAt),
         };
@@ -46,7 +46,7 @@ export default class PortfolioAPI {
           closingStrategy,
           side: type === 'call' ? 'buy' : 'sell',
           symbol: chainSymbol,
-          quantity: parseInt(quantity || null, 10),
+          quantity: PortfolioAPI.offsetQuantity(`${type}_${closingStrategy}`, parseInt(quantity, 10) || null),
           price: parseFloat(price || null, 10),
           strikePrice: parseFloat(strikePrice || null, 10),
           lastTransactionAt: PortfolioAPI.getDate(lastTransactionAt),
@@ -54,6 +54,15 @@ export default class PortfolioAPI {
         };
       }),
     };
+  }
+
+  static offsetQuantity(transactionType, quantity) {
+    const transactionValue = {
+      long: 1, short: -1, call: 1, put: -1, buy: 1, sell: -1,
+    };
+
+    return transactionType.split('_')
+      .reduce((offsetQuantity, type) => offsetQuantity * transactionValue[type.toLowerCase()], quantity);
   }
 
   static getDate(ISOdateString) {
