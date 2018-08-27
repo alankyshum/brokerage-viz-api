@@ -1,4 +1,4 @@
-import { Portfolio } from '../../../robinhood-portfolio';
+import { Portfolio } from 'robinhood-portfolio';
 
 export default class PortfolioAPI {
   constructor(apiToken, config) {
