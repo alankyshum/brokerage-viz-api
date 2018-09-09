@@ -1,5 +1,6 @@
 dist
 node_modules
-.cached-fetch
 .env
 yarn-error.log
+.cache
+.cache-fetch
