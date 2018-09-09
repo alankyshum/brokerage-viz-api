@@ -38,7 +38,9 @@ export default class Cache {
       .get(Cache.encodeKey(key))
       .value();
 
-    if (!cachedData || new Date() - cachedData.created > this.ttl) return null;
+    const expiredCache = cachedData && (new Date() - cachedData.created > this.ttl);
+    if (expiredCache) this.db.unset(Cache.encodeKey(key)).write();
+    if (!cachedData || expiredCache) return null;
     return cachedData.data;
   }
 
