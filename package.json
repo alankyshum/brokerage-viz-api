@@ -27,6 +27,7 @@
     "dotenv": "^6.0.0",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "robinhood-portfolio": "^1.2.2"
   }
 }
